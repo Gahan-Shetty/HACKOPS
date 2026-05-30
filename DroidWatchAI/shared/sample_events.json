@@ -1,0 +1,135 @@
+[
+  {
+    "id": "evt_001",
+    "timestamp": "2025-06-01T10:23:45Z",
+    "layer": "network",
+    "type": "c2_callback",
+    "severity": "high",
+    "description": "Suspicious outbound connection to known C2 server",
+    "details": {
+      "destination_ip": "185.220.101.47",
+      "destination_port": 443,
+      "protocol": "HTTPS",
+      "bytes_sent": 1024,
+      "bytes_received": 512
+    },
+    "raw": "W/System.err: java.net.Socket: connect 185.220.101.47:443",
+    "mitre_technique": "T1071.001",
+    "defense_triggered": false
+  },
+  {
+    "id": "evt_002",
+    "timestamp": "2025-06-01T10:23:52Z",
+    "layer": "network",
+    "type": "dns_abuse",
+    "severity": "medium",
+    "description": "DNS query to suspicious domain associated with malware distribution",
+    "details": {
+      "queried_domain": "update.xn--malwr-distributer.com",
+      "resolved_ip": "91.108.4.200",
+      "query_type": "A"
+    },
+    "raw": "D/NetworkMonitor: DNS query: update.xn--malwr-distributer.com -> 91.108.4.200",
+    "mitre_technique": "T1568.002",
+    "defense_triggered": false
+  },
+  {
+    "id": "evt_003",
+    "timestamp": "2025-06-01T10:24:10Z",
+    "layer": "filesystem",
+    "type": "hidden_file_creation",
+    "severity": "high",
+    "description": "APK dropped a hidden payload file in internal storage",
+    "details": {
+      "file_path": "/data/data/com.suspicious.app/files/.payload.dex",
+      "file_size_bytes": 45312,
+      "file_type": "DEX",
+      "hidden": true
+    },
+    "raw": "I/ActivityManager: File created: /data/data/com.suspicious.app/files/.payload.dex",
+    "mitre_technique": "T1027",
+    "defense_triggered": false
+  },
+  {
+    "id": "evt_004",
+    "timestamp": "2025-06-01T10:24:18Z",
+    "layer": "system",
+    "type": "permission_abuse",
+    "severity": "medium",
+    "description": "App dynamically requested SMS READ permission at runtime without user context",
+    "details": {
+      "permission": "android.permission.READ_SMS",
+      "package": "com.suspicious.app",
+      "granted": true,
+      "runtime_requested": true
+    },
+    "raw": "W/PackageManager: Permission request: android.permission.READ_SMS by com.suspicious.app",
+    "mitre_technique": "T1422",
+    "defense_triggered": false
+  },
+  {
+    "id": "evt_005",
+    "timestamp": "2025-06-01T10:24:35Z",
+    "layer": "system",
+    "type": "background_service",
+    "severity": "medium",
+    "description": "App started a persistent background service immediately after install",
+    "details": {
+      "service_name": "com.suspicious.app/.services.PersistentService",
+      "started_by": "BOOT_COMPLETED receiver",
+      "foreground": false
+    },
+    "raw": "I/ActivityManager: Start service com.suspicious.app/.services.PersistentService",
+    "mitre_technique": "T1398",
+    "defense_triggered": false
+  },
+  {
+    "id": "evt_006",
+    "timestamp": "2025-06-01T10:24:50Z",
+    "layer": "network",
+    "type": "beaconing",
+    "severity": "high",
+    "description": "Regular outbound beaconing detected — fixed interval suggests C2 keep-alive",
+    "details": {
+      "destination_ip": "185.220.101.47",
+      "interval_seconds": 30,
+      "occurrences": 3,
+      "pattern": "regular"
+    },
+    "raw": "W/NetworkMonitor: Repeated connection to 185.220.101.47 every ~30s",
+    "mitre_technique": "T1132",
+    "defense_triggered": false
+  },
+  {
+    "id": "evt_007",
+    "timestamp": "2025-06-01T10:25:10Z",
+    "layer": "filesystem",
+    "type": "persistence_mechanism",
+    "severity": "high",
+    "description": "App registered a BOOT_COMPLETED broadcast receiver for auto-start on device reboot",
+    "details": {
+      "receiver": "com.suspicious.app/.receivers.BootReceiver",
+      "trigger": "android.intent.action.BOOT_COMPLETED",
+      "auto_start": true
+    },
+    "raw": "I/PackageManager: Registered receiver: BOOT_COMPLETED -> com.suspicious.app/.receivers.BootReceiver",
+    "mitre_technique": "T1398",
+    "defense_triggered": false
+  },
+  {
+    "id": "evt_008",
+    "timestamp": "2025-06-01T10:25:30Z",
+    "layer": "system",
+    "type": "sms_intercept",
+    "severity": "critical",
+    "description": "App intercepted incoming SMS message — possible OTP/banking credential theft",
+    "details": {
+      "sms_sender": "+919876543210",
+      "content_preview": "[REDACTED - OTP detected]",
+      "forwarded_to_ip": "185.220.101.47"
+    },
+    "raw": "W/SmsReceiver: SMS received and processed by com.suspicious.app",
+    "mitre_technique": "T1412",
+    "defense_triggered": false
+  }
+]
