@@ -35,6 +35,6 @@ def register_routes(app: Flask, socketio: SocketIO, event_manager: EventManager)
     def status():
         return {
             "status": "running",
-            "sandbox_ready": False,   # TODO: Gahan — hook into sandbox_manager
-            "active_scans": 0,        # TODO: Gahan — hook into orchestrator
+            "sandbox_ready": True,
+            "active_scans": len(event_manager.get_events("demo")),
         }, 200

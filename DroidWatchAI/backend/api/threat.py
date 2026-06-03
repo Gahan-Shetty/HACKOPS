@@ -43,8 +43,11 @@ def get_threats(scan_id: str):
     if scan_id == "demo":
         return get_demo_events()
 
-    # Stub: return empty for now
-    # Replace with: events = db.get_events_by_scan(scan_id)
+    from backend.database.db import get_conn
+    conn = get_conn()
+    rows = conn.execute("SELECT * FROM events WHERE scan_id=?", (scan_id,)).fetchall()
+    events = [dict(row) for row in rows]
+    conn.close()
     logger.info(f"Threat query for scan_id={scan_id}")
     return jsonify({
         "scan_id": scan_id,

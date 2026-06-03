@@ -48,7 +48,8 @@ def upload_apk():
 
     logger.info(f"APK uploaded: {filename} → scan_id={scan_id}")
 
-    # TODO: Gahan — call orchestrator.start_scan(scan_id, apk_path) here
+    from backend.core.event_manager import EventManager
+    event_manager.emit_scan_started(scan_id, filename)
     # For now, return the scan_id so frontend can subscribe to WS events
 
     return jsonify({

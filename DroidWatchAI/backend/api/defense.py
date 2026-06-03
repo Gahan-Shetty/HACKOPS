@@ -87,8 +87,8 @@ def trigger_defense(scan_id: str):
     _defense_log.append(defense_event)
     logger.info(f"Defense triggered: {action} on {target} for scan {scan_id}")
 
-    # TODO: Gahan — emit via socketio so dashboard updates live
-    # socketio.emit(WSEvents.DEFENSE_TRIGGER, defense_event)
+    from flask_socketio import emit
+    socketio.emit(WSEvents.DEFENSE_TRIGGER, defense_event, broadcast=True)
 
     return jsonify({"success": True, "defense_event": defense_event}), 200
 
